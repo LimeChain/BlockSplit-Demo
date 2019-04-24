@@ -1,0 +1,147 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div style="text-align:center">
+        <h1>
+          Welcome to {{ title }}!
+        </h1>
+        <hr>
+        <!-- <input type="text" id="input_ToDo" [(ngModel)]='state' placeholder="To Do"><br> -->
+        <h3>Proove that you know four cards from deck of playing cards!</h3>
+        <h4>Please enter four cards, which you think computer has chosen! The suit is NOT important!</h4>
+        <h4>Possible inputs: 2,3,4,5,6,7,8,9,10,11,Q,K,J</h4>
+        <hr>
+        <form class="form-inline text-center">
+          <!-- <div class="form-group mb-2">
+            <label for="staticEmail2" class="sr-only">Email</label>
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">
+          </div> -->
+          <div class="form-group mx-sm-2 mb-2">
+            <img src="../assets/images/card.jpg" alt="Smiley face" height="80">
+            <label for="inputFirstNumber" class="sr-only">First Card</label>
+            <input type="number" [(ngModel)]="firstCard" name="inputFirstNumber" class="form-control" id="inputFirstNumber" placeholder="First Card">
+          </div>
+          <div class="form-group mx-sm-2 mb-2">
+            <img src="../assets/images/card.jpg" alt="Smiley face" height="80">
+            <label for="inputSecondNumber" class="sr-only">Second Card</label>
+            <input type="number" [(ngModel)]="secondCard" name="inputSecondNumber" class="form-control" id="inputSecondNumber" placeholder="Second Card">
+          </div>
+          <div class="form-group mx-sm-2 mb-2">
+            <img src="../assets/images/card.jpg" alt="Smiley face" height="80">
+            <label for="inputThurdNumber" class="sr-only">Third Card</label>
+            <input type="number" [(ngModel)]="thirdCard" name="inputThurdNumber" class="form-control" id="inputThurdNumber" placeholder="Third Card">
+          </div>
+          <div class="form-group mx-sm-2 mb-2">
+            <img src="../assets/images/card.jpg" alt="Smiley face" height="80">
+            <label for="inputFourthNumber" class="sr-only">Four Card</label>
+            <input type="number" [(ngModel)]="fourthCard" name="inputFourthNumber" class="form-control" id="inputFourthNumber" placeholder="Four Card">
+          </div>
+        </form>
+        <div>
+          <p>Your selected input is:</p>
+          <p *ngIf="firstCard">cardOne = {{firstCard}}</p>
+          <p *ngIf="secondCard">cardTwo = {{secondCard}}</p>
+          <p *ngIf="thirdCard">cardThree = {{thirdCard}}</p>
+          <p *ngIf="fourthCard">cardFour = {{fourthCard}}</p>
+        </div>
+       
+        <div class="loading" [hidden]="!this.isLoading">Loading...</div>
+
+        <!-- <textarea data-ng-model="myModel"></textarea>    -->
+        <hr>
+        <!-- <button class="btn btn-primary" (click)="getToDoStatuses()">GET TODOS</button> -->
+        <button type="button" class="btn btn-success mb-2" [disabled]="!firstCard || !secondCard || !thirdCard || !fourthCard" (click)="generateProof()">Generate Proof</button>
+        <button type="button" class="btn btn-success mb-2 pass-input" [disabled]="!proof" (click)="verifyOffChain()">Verify Proof OffChain</button>
+        <button type="button" class="btn btn-success mb-2 pass-input" (click)="generateCall()">Generate Call</button>
+
+        <!-- <div class="form-group mx-sm-3 mb-2">
+          <label for="inputCall" class="sr-only">Text for todo</label>
+          <input type="number" #inputCall class="form-control" id="inputCall" placeholder="b">
+        </div> -->
+        <button type="button" class="btn btn-success mb-2 pass-input" (click)="verifyOnChain()">Verify Proof
+          OnChain</button>
+        <hr>
+
+
+        <!-- Info Message -->
+        <div class="alert alert-success" *ngIf="shouldShowInfoMessage" role="alert">
+            {{infoMessage}}
+        </div>
+
+
+        <!-- Error Message -->
+        <div class="alert alert-danger" *ngIf="shouldShowErrorMessage" role="alert">
+            {{errorMessage}}
+        </div>
+
+        {{generatedCall}}
+        
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Info Message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                {{modalMessage}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="container">
+  <h2 class="text-center">Todo list:</h2>
+  <div class="row">
+    <div class="col-xs-4">
+      <div class="todo-column">
+        <span class="badge badge-secondary">TO DO</span>
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-danger" *ngIf="toDos && toDos.toDo.length < 1">NONE</li>
+          <li class="list-group-item" *ngFor="let todo of toDos.toDo">{{todo}}
+            <div class="buttons-group">
+              <button class="btn btn-primary btn-sm btn-warning" (click)="moveToInProgress(todo)">Change
+                Status</button>
+              <button class="btn btn-primary btn-sm btn-danger" (click)="removeToDo(todo, 'todo')">Delete</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-xs-4">
+      <div class="todo-column">
+        <span class="badge badge-secondary">IN PROGRESS</span>
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-danger" *ngIf="toDos && toDos.inProgress.length < 1">NONE</li>
+          <li class="list-group-item" *ngFor="let todo of toDos.inProgress">{{todo}}
+            <div class="buttons-group">
+              <button class="btn btn-primary btn-sm btn-warning" (click)="moveToDone(todo)">Change Status</button>
+              <button class="btn btn-primary btn-sm btn-danger" (click)="removeToDo(todo, 'progress')">Delete</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-xs-4">
+
+      <div class="todo-column">
+        <span class="badge badge-secondary">DONE</span>
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-danger" *ngIf="toDos && toDos.done.length < 1">NONE</li>
+          <li class="list-group-item" *ngFor="let todo of toDos.done">{{todo}}
+            <div class="buttons-group">
+              <button class="btn btn-primary btn-sm btn-danger" (click)="removeToDo(todo, 'done')">Delete</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div> -->
