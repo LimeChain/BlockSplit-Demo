@@ -1,17 +1,22 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <div style="text-align:center">
-        <h1>
-          Welcome to {{ title }}!
-        </h1>
+      <div class="text-left">
+        <div class="text-center">
+          <h1>
+            Welcome to {{ title }}!
+          </h1>
+          <hr>
+          <!-- <input type="text" id="input_ToDo" [(ngModel)]='state' placeholder="To Do"><br> -->
+          <h3>Proove that you know four cards from deck of playing cards!</h3>
+          <h4>Please enter four cards, which you think computer has chosen! The suit is NOT important!</h4>
+          <h4>Possible inputs: 2,3,4,5,6,7,8,9,10,11,Q,K,J</h4>
+        </div>
         <hr>
-        <!-- <input type="text" id="input_ToDo" [(ngModel)]='state' placeholder="To Do"><br> -->
-        <h3>Proove that you know four cards from deck of playing cards!</h3>
-        <h4>Please enter four cards, which you think computer has chosen! The suit is NOT important!</h4>
-        <h4>Possible inputs: 2,3,4,5,6,7,8,9,10,11,Q,K,J</h4>
+        <label for="walletPK" class="text-left">Your private key</label>
+        <input type="text" [(ngModel)]="proverPK" name="walletPK" class="form-control" id="walletPK" placeholder="Your wallet private key">
         <hr>
-        <form class="form-inline text-center">
+        <form class="form-inline text-left">
           <!-- <div class="form-group mb-2">
             <label for="staticEmail2" class="sr-only">Email</label>
             <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">
@@ -44,7 +49,7 @@
           <p *ngIf="thirdCard">cardThree = {{thirdCard}}</p>
           <p *ngIf="fourthCard">cardFour = {{fourthCard}}</p>
         </div>
-       
+
         <div class="loading" [hidden]="!this.isLoading">Loading...</div>
 
         <!-- <textarea data-ng-model="myModel"></textarea>    -->
@@ -52,31 +57,31 @@
         <!-- <button class="btn btn-primary" (click)="getToDoStatuses()">GET TODOS</button> -->
         <button type="button" class="btn btn-success mb-2" [disabled]="!firstCard || !secondCard || !thirdCard || !fourthCard" (click)="generateProof()">Generate Proof</button>
         <button type="button" class="btn btn-success mb-2 pass-input" [disabled]="!proof" (click)="verifyOffChain()">Verify Proof OffChain</button>
-        <button type="button" class="btn btn-success mb-2 pass-input" (click)="generateCall()">Generate Call</button>
+        <!-- <button type="button" class="btn btn-success mb-2 pass-input" (click)="generateCall()">Generate Call</button> -->
 
         <!-- <div class="form-group mx-sm-3 mb-2">
           <label for="inputCall" class="sr-only">Text for todo</label>
           <input type="number" #inputCall class="form-control" id="inputCall" placeholder="b">
         </div> -->
-        <button type="button" class="btn btn-success mb-2 pass-input" (click)="verifyOnChain()">Verify Proof
+        <button type="button" class="btn btn-success mb-2 pass-input" [disabled]="!proof" (click)="verifyOnChain()">Verify Proof
           OnChain</button>
         <hr>
 
 
         <!-- Info Message -->
         <div class="alert alert-success" *ngIf="shouldShowInfoMessage" role="alert">
-            {{infoMessage}}
+          {{infoMessage}}
         </div>
 
 
         <!-- Error Message -->
         <div class="alert alert-danger" *ngIf="shouldShowErrorMessage" role="alert">
-            {{errorMessage}}
+          {{errorMessage}}
         </div>
 
         {{generatedCall}}
-        
-        
+
+
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
