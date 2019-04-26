@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   title = 'zk-web';
 
   public contractInstance: any;
-  public contractAddress = '0x9eD274314f0fB37837346C425D3cF28d89ca9599';
+  public contractAddress = '0xc9707E1e496C12f1Fa83AFbbA8735DA697cdBf64';
   public proverPK = '0x6ca40ba4cca775643398385022264c0c414da1abd21d08d9e7136796a520a543';
 
   public firstCard: string;
@@ -106,14 +106,16 @@ export class AppComponent implements OnInit {
 
   // OnChain Verify Proof
   public async verifyOnChain() {
+    this.isLoading = true;
     const provider = new ethers.providers.JsonRpcProvider('http://localhost:8545');
     this.proverWallet = new ethers.Wallet(this.proverPK, provider);
     this.contractInstance = await etherlime.ContractAt(verifier, this.contractAddress, this.proverWallet, provider);
     const contractArgsStr = zkSnark.generateCall(this.publicSignals, this.proof);
-    const contractArgsArr = JSON.parse(`[${contractArgsStr}]`)
+    const contractArgsArr = JSON.parse(`[${contractArgsStr}]`);
     const balanceBefore = await this.proverWallet.getBalance();
     const isValid = await this.contractInstance.submitSolution(...Array.prototype.slice.call(contractArgsArr));
     const balanceAfter = await this.proverWallet.getBalance();
+    this.isLoading = false;
     this.showModal(`Your proof is ${isValid ? 'VALID' : 'INVALID'}. Balance increased by ${ethers.utils.formatEther(balanceAfter.sub(balanceBefore).toString(10))}`);
   }
 
